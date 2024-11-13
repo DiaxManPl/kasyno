@@ -53,6 +53,15 @@ export default {
 					5: "hsl(var(--chart-5))",
 				},
 			},
+			keyframes: {
+				zoom: {
+					"0%, 100%": { transform: "scale(1)" },
+					"50%": { transform: "scale(1.1)" },
+				},
+			},
+			animation: {
+				zoom: "zoom 1s linear infinite",
+			},
 		},
 	},
 	plugins: [animate],

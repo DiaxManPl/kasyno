@@ -5,6 +5,8 @@ import { arrayAt } from "../../lib/array";
 
 import ShinyButton from "@/components/magicui/shiny-button";
 import { useMoneyStore } from "@/lib/store/moneyStore";
+import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import clsx from "clsx";
 
 export const Route = createFileRoute("/games/slots")({
 	component: Slots,
@@ -16,38 +18,50 @@ const randomSlot = () => randomNumber(0, 5);
 
 function Slots() {
 	const [slots, setSlots] = useState<[number, number, number]>([0, 0, 0]);
-	const [isSpinning, setIsSpinning] = useState(false);
-	const [isCooldown, setIsCooldown] = useState(false);
+	const [spinningInterval, setSpinningInterval] = useState<number | null>(null);
+	const [isDisabled, setisDisabled] = useState(false);
+	const [isWinAnimationActive, setisWinAnimationActive] = useState(false);
 
-	const { setMoney } = useMoneyStore();
+	const { money, setMoney } = useMoneyStore();
 
 	useEffect(() => {
-		let interval: number;
-		let timeout: number;
+		if (money < 5) setisDisabled(true);
+	}, [money, spinningInterval]);
 
-		if (isSpinning) {
-			setIsCooldown(true);
+	const handleBtnClick = () => {
+		if (isDisabled) return;
 
-			interval = setInterval(() => {
-				setSlots([randomSlot(), randomSlot(), randomSlot()]);
-			}, 100);
+		if (spinningInterval === null) {
+			setisWinAnimationActive(false);
 
-			timeout = setTimeout(() => setIsCooldown(false), 2000);
-		}
+			setMoney((m) => m - 5);
 
-		if (!isSpinning) {
+			setisDisabled(true);
+			setTimeout(() => {
+				setisDisabled(false);
+			}, 2000);
+
+			setSpinningInterval(
+				setInterval(() => {
+					setSlots([randomSlot(), randomSlot(), randomSlot()]);
+				}, 100),
+			);
+		} else {
+			clearInterval(spinningInterval);
+			setSpinningInterval(null);
+
 			const [a, b, c] = slots;
-			if (a === b && b === c) setMoney((prev) => prev + 100);
+			if (a == b && b == c) {
+				setisWinAnimationActive(true);
+				if (a === 0 || a === 4) setMoney((m) => m + 100);
+				else if (a === 1 || a === 3) setMoney((m) => m + 200);
+				else setMoney((m) => m + 500);
+			}
 		}
-
-		return () => {
-			if (interval) clearInterval(interval);
-			clearTimeout(timeout);
-		};
-	}, [isSpinning]);
+	};
 
 	return (
-		<div className="grid h-full place-items-center">
+		<div className="relative grid h-full select-none place-items-center">
 			<div className="flex w-44 flex-col items-center gap-8 rounded-xl border border-amber-400 bg-amber-400/50 p-4">
 				<div>
 					<div className="flex items-center gap-2">
@@ -57,7 +71,11 @@ function Slots() {
 							</span>
 						))}
 					</div>
-					<div className="flex items-center gap-2">
+					<div
+						className={clsx("flex items-center gap-2", {
+							"animate-zoom": isWinAnimationActive,
+						})}
+					>
 						{slots.map((slot, i) => (
 							<span className="grid size-10 place-content-center border border-black bg-orange-300 text-xl" key={i}>
 								{arrayAt(SLOT_ICONS, slot)}
@@ -72,10 +90,32 @@ function Slots() {
 						))}
 					</div>
 				</div>
-				<ShinyButton disabled={isCooldown} className="w-full" onClick={() => setIsSpinning((prev) => !prev)}>
-					{isSpinning ? "Stop" : "Start"}
+				<ShinyButton disabled={isDisabled} className="w-full" onClick={() => handleBtnClick()}>
+					{spinningInterval === null ? "Start" : "Stop"}
 				</ShinyButton>
 			</div>
+
+			<Dialog>
+				<DialogTrigger>
+					<span className="absolute right-4 top-4 flex size-16 items-center justify-center rounded-md border-amber-400 bg-amber-400/50 text-2xl">
+						?
+					</span>
+				</DialogTrigger>
+				<DialogContent>
+					<DialogTitle>Jak grać w Jednorękiego bandytę?</DialogTitle>
+
+					<p>Dopasuj 3 ikony, ażeby osiągnąć wygraną!</p>
+					<p>🍊🍊🍊: 100</p>
+					<p>🐔🐔🐔: 100</p>
+					<p>🍒🍒🍒: 200</p>
+					<p>🍉🍉🍉: 200</p>
+					<p>⚜⚜⚜: 500</p>
+
+					<DialogClose asChild>
+						<ShinyButton className="w-full">Zrozumiałem</ShinyButton>
+					</DialogClose>
+				</DialogContent>
+			</Dialog>
 		</div>
 	);
 }
