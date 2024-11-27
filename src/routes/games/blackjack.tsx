@@ -81,17 +81,15 @@ function Blackjack() {
 			setGameState("player");
 		} else if (gameState === "dealer") {
 			// We need to also keep track of it locally because the useMemo does not update instantly
-			let dealerPoints = dealerHand.reduce((sum, card) => sum + getCardValue(card, sum), 0);
-			while (dealerPoints < 17) {
+			let dealerPointsLocal = dealerPoints;
+			while (dealerPointsLocal < 17) {
 				const card = deck.shift()!;
 				setDealerHand([...dealerHand, card]);
-
-				dealerPoints += getCardValue(card, dealerPoints);
+				dealerPointsLocal += getCardValue(card, dealerPointsLocal);
 			}
-
-			if (dealerPoints > 21) setGameState("dealerBust");
-			else if (dealerPoints > playerPoints) setGameState("dealerWon");
-			else if (dealerPoints < playerPoints) setGameState("playerWon");
+			if (dealerPointsLocal > 21) setGameState("dealerBust");
+			else if (dealerPointsLocal > playerPoints) setGameState("dealerWon");
+			else if (dealerPointsLocal < playerPoints) setGameState("playerWon");
 			else setGameState("push");
 		} else if (gameState === "dealerBust" || gameState === "playerWon") {
 			setMoney((prev) => prev + betAmount * 2);
@@ -113,7 +111,7 @@ function Blackjack() {
 				<div className="flex">
 					{dealerHand.map((card, i) => {
 						const isHidden = i === 0 && (gameState === "dealing" || gameState === "player");
-						return <img src={`/cards/${isHidden ? "back" : card}.svg`} alt={card} width="110" />;
+						return <img key={i} src={`/cards/${isHidden ? "back" : card}.svg`} alt={card} width="110" />;
 					})}
 				</div>
 				<div className="flex items-center gap-5">
@@ -155,8 +153,8 @@ function Blackjack() {
 					)}
 				</div>
 				<div className="flex">
-					{playerHand.map((card) => {
-						return <img src={`/cards/${card}.svg`} alt={card} width="110" />;
+					{playerHand.map((card, i) => {
+						return <img key={i} src={`/cards/${card}.svg`} alt={card} width="110" />;
 					})}
 				</div>
 				<span className="h-2">{gameState !== "idle" && playerPoints}</span>
