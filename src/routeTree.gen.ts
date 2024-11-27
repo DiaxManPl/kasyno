@@ -10,117 +10,148 @@
 
 // Import Routes
 
-import { Route as rootRoute } from "./routes/__root";
-import { Route as PayoutImport } from "./routes/payout";
-import { Route as IndexImport } from "./routes/index";
-import { Route as GamesSlotsImport } from "./routes/games/slots";
-import { Route as GamesBlackjackImport } from "./routes/games/blackjack";
+import { Route as rootRoute } from './routes/__root'
+import { Route as PayoutImport } from './routes/payout'
+import { Route as IndexImport } from './routes/index'
+import { Route as GamesSlotsImport } from './routes/games/slots'
+import { Route as GamesBlackjackImport } from './routes/games/blackjack'
+import { Route as GamesBaccaratImport } from './routes/games/baccarat'
 
 // Create/Update Routes
 
 const PayoutRoute = PayoutImport.update({
-	path: "/payout",
-	getParentRoute: () => rootRoute,
-} as any);
+  path: '/payout',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
-	path: "/",
-	getParentRoute: () => rootRoute,
-} as any);
+  path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const GamesSlotsRoute = GamesSlotsImport.update({
-	path: "/games/slots",
-	getParentRoute: () => rootRoute,
-} as any);
+  path: '/games/slots',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const GamesBlackjackRoute = GamesBlackjackImport.update({
-	path: "/games/blackjack",
-	getParentRoute: () => rootRoute,
-} as any);
+  path: '/games/blackjack',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const GamesBaccaratRoute = GamesBaccaratImport.update({
+  path: '/games/baccarat',
+  getParentRoute: () => rootRoute,
+} as any)
 
 // Populate the FileRoutesByPath interface
 
-declare module "@tanstack/react-router" {
-	interface FileRoutesByPath {
-		"/": {
-			id: "/";
-			path: "/";
-			fullPath: "/";
-			preLoaderRoute: typeof IndexImport;
-			parentRoute: typeof rootRoute;
-		};
-		"/payout": {
-			id: "/payout";
-			path: "/payout";
-			fullPath: "/payout";
-			preLoaderRoute: typeof PayoutImport;
-			parentRoute: typeof rootRoute;
-		};
-		"/games/blackjack": {
-			id: "/games/blackjack";
-			path: "/games/blackjack";
-			fullPath: "/games/blackjack";
-			preLoaderRoute: typeof GamesBlackjackImport;
-			parentRoute: typeof rootRoute;
-		};
-		"/games/slots": {
-			id: "/games/slots";
-			path: "/games/slots";
-			fullPath: "/games/slots";
-			preLoaderRoute: typeof GamesSlotsImport;
-			parentRoute: typeof rootRoute;
-		};
-	}
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/payout': {
+      id: '/payout'
+      path: '/payout'
+      fullPath: '/payout'
+      preLoaderRoute: typeof PayoutImport
+      parentRoute: typeof rootRoute
+    }
+    '/games/baccarat': {
+      id: '/games/baccarat'
+      path: '/games/baccarat'
+      fullPath: '/games/baccarat'
+      preLoaderRoute: typeof GamesBaccaratImport
+      parentRoute: typeof rootRoute
+    }
+    '/games/blackjack': {
+      id: '/games/blackjack'
+      path: '/games/blackjack'
+      fullPath: '/games/blackjack'
+      preLoaderRoute: typeof GamesBlackjackImport
+      parentRoute: typeof rootRoute
+    }
+    '/games/slots': {
+      id: '/games/slots'
+      path: '/games/slots'
+      fullPath: '/games/slots'
+      preLoaderRoute: typeof GamesSlotsImport
+      parentRoute: typeof rootRoute
+    }
+  }
 }
 
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-	"/": typeof IndexRoute;
-	"/payout": typeof PayoutRoute;
-	"/games/blackjack": typeof GamesBlackjackRoute;
-	"/games/slots": typeof GamesSlotsRoute;
+  '/': typeof IndexRoute
+  '/payout': typeof PayoutRoute
+  '/games/baccarat': typeof GamesBaccaratRoute
+  '/games/blackjack': typeof GamesBlackjackRoute
+  '/games/slots': typeof GamesSlotsRoute
 }
 
 export interface FileRoutesByTo {
-	"/": typeof IndexRoute;
-	"/payout": typeof PayoutRoute;
-	"/games/blackjack": typeof GamesBlackjackRoute;
-	"/games/slots": typeof GamesSlotsRoute;
+  '/': typeof IndexRoute
+  '/payout': typeof PayoutRoute
+  '/games/baccarat': typeof GamesBaccaratRoute
+  '/games/blackjack': typeof GamesBlackjackRoute
+  '/games/slots': typeof GamesSlotsRoute
 }
 
 export interface FileRoutesById {
-	__root__: typeof rootRoute;
-	"/": typeof IndexRoute;
-	"/payout": typeof PayoutRoute;
-	"/games/blackjack": typeof GamesBlackjackRoute;
-	"/games/slots": typeof GamesSlotsRoute;
+  __root__: typeof rootRoute
+  '/': typeof IndexRoute
+  '/payout': typeof PayoutRoute
+  '/games/baccarat': typeof GamesBaccaratRoute
+  '/games/blackjack': typeof GamesBlackjackRoute
+  '/games/slots': typeof GamesSlotsRoute
 }
 
 export interface FileRouteTypes {
-	fileRoutesByFullPath: FileRoutesByFullPath;
-	fullPaths: "/" | "/payout" | "/games/blackjack" | "/games/slots";
-	fileRoutesByTo: FileRoutesByTo;
-	to: "/" | "/payout" | "/games/blackjack" | "/games/slots";
-	id: "__root__" | "/" | "/payout" | "/games/blackjack" | "/games/slots";
-	fileRoutesById: FileRoutesById;
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | '/payout'
+    | '/games/baccarat'
+    | '/games/blackjack'
+    | '/games/slots'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/payout' | '/games/baccarat' | '/games/blackjack' | '/games/slots'
+  id:
+    | '__root__'
+    | '/'
+    | '/payout'
+    | '/games/baccarat'
+    | '/games/blackjack'
+    | '/games/slots'
+  fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-	IndexRoute: typeof IndexRoute;
-	PayoutRoute: typeof PayoutRoute;
-	GamesBlackjackRoute: typeof GamesBlackjackRoute;
-	GamesSlotsRoute: typeof GamesSlotsRoute;
+  IndexRoute: typeof IndexRoute
+  PayoutRoute: typeof PayoutRoute
+  GamesBaccaratRoute: typeof GamesBaccaratRoute
+  GamesBlackjackRoute: typeof GamesBlackjackRoute
+  GamesSlotsRoute: typeof GamesSlotsRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-	IndexRoute: IndexRoute,
-	PayoutRoute: PayoutRoute,
-	GamesBlackjackRoute: GamesBlackjackRoute,
-	GamesSlotsRoute: GamesSlotsRoute,
-};
+  IndexRoute: IndexRoute,
+  PayoutRoute: PayoutRoute,
+  GamesBaccaratRoute: GamesBaccaratRoute,
+  GamesBlackjackRoute: GamesBlackjackRoute,
+  GamesSlotsRoute: GamesSlotsRoute,
+}
 
-export const routeTree = rootRoute._addFileChildren(rootRouteChildren)._addFileTypes<FileRouteTypes>();
+export const routeTree = rootRoute
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
 
 /* prettier-ignore-end */
 
@@ -132,6 +163,7 @@ export const routeTree = rootRoute._addFileChildren(rootRouteChildren)._addFileT
       "children": [
         "/",
         "/payout",
+        "/games/baccarat",
         "/games/blackjack",
         "/games/slots"
       ]
@@ -141,6 +173,9 @@ export const routeTree = rootRoute._addFileChildren(rootRouteChildren)._addFileT
     },
     "/payout": {
       "filePath": "payout.tsx"
+    },
+    "/games/baccarat": {
+      "filePath": "games/baccarat.tsx"
     },
     "/games/blackjack": {
       "filePath": "games/blackjack.tsx"
