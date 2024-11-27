@@ -19,6 +19,7 @@ type GameState =
 	| "playerBust"
 	| "dealerBust"
 	| "playerWon"
+	| "playerBlackjack"
 	| "dealerWon"
 	| "push";
 
@@ -28,6 +29,7 @@ const gameStateText: Record<GameState, string> = {
 	player: "Twój ruch",
 	dealer: "Ruch krupiera",
 	playerBust: "Przegrałeś (przekroczyłeś 21)",
+	playerBlackjack: "Czarny Jacek!",
 	dealerBust: "Wygrałeś (krupier przekroczył 21)",
 	playerWon: "Wygrałeś",
 	dealerWon: "Przegrałeś",
@@ -50,7 +52,7 @@ function Blackjack() {
 	const [betAmount, setBetAmount] = useState<number>(1);
 
 	const startGame = () => {
-		if (betAmount > money) return;
+		if (betAmount > money || betAmount < 1) return;
 
 		setMoney((prev) => prev - betAmount);
 		setGameState("dealing");
@@ -77,8 +79,11 @@ function Blackjack() {
 	useEffect(() => {
 		if (gameState === "dealing") {
 			setDealerHand([deck.shift()!, deck.shift()!]);
-			setPlayerHand([deck.shift()!, deck.shift()!]);
-			setGameState("player");
+			const newPlayerHand = [deck.shift()!, deck.shift()!];
+			setPlayerHand(newPlayerHand);
+			if (newPlayerHand.reduce((sum, card) => sum + getCardValue(card, sum), 0) === 21) {
+				setGameState("playerBlackjack");
+			} else setGameState("player");
 		} else if (gameState === "dealer") {
 			// We need to also keep track of it locally because the useMemo does not update instantly
 			let dealerPointsLocal = dealerPoints;
@@ -93,6 +98,8 @@ function Blackjack() {
 			else setGameState("push");
 		} else if (gameState === "dealerBust" || gameState === "playerWon") {
 			setMoney((prev) => prev + betAmount * 2);
+		} else if (gameState === "playerBlackjack") {
+			setMoney((prev) => prev + betAmount * 2.5);
 		} else if (gameState === "push") {
 			setMoney((prev) => prev + betAmount);
 		}
@@ -145,7 +152,7 @@ function Blackjack() {
 							</Button>
 						</>
 					)}
-					{["playerBust", "dealerBust", "playerWon", "dealerWon", "push"].includes(gameState) && (
+					{["playerBust", "dealerBust", "playerWon", "playerBlackjack", "dealerWon", "push"].includes(gameState) && (
 						<>
 							<span>{gameStateText[gameState]}</span>
 							<ShinyButton onClick={() => restartGame()}>Zagraj ponownie</ShinyButton>
