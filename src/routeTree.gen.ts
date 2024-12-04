@@ -14,8 +14,8 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as PayoutImport } from './routes/payout'
 import { Route as IndexImport } from './routes/index'
 import { Route as GamesSlotsImport } from './routes/games/slots'
+import { Route as GamesPuntoBancoImport } from './routes/games/puntoBanco'
 import { Route as GamesBlackjackImport } from './routes/games/blackjack'
-import { Route as GamesBaccaratImport } from './routes/games/baccarat'
 
 // Create/Update Routes
 
@@ -34,13 +34,13 @@ const GamesSlotsRoute = GamesSlotsImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const GamesBlackjackRoute = GamesBlackjackImport.update({
-  path: '/games/blackjack',
+const GamesPuntoBancoRoute = GamesPuntoBancoImport.update({
+  path: '/games/puntoBanco',
   getParentRoute: () => rootRoute,
 } as any)
 
-const GamesBaccaratRoute = GamesBaccaratImport.update({
-  path: '/games/baccarat',
+const GamesBlackjackRoute = GamesBlackjackImport.update({
+  path: '/games/blackjack',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -62,18 +62,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PayoutImport
       parentRoute: typeof rootRoute
     }
-    '/games/baccarat': {
-      id: '/games/baccarat'
-      path: '/games/baccarat'
-      fullPath: '/games/baccarat'
-      preLoaderRoute: typeof GamesBaccaratImport
-      parentRoute: typeof rootRoute
-    }
     '/games/blackjack': {
       id: '/games/blackjack'
       path: '/games/blackjack'
       fullPath: '/games/blackjack'
       preLoaderRoute: typeof GamesBlackjackImport
+      parentRoute: typeof rootRoute
+    }
+    '/games/puntoBanco': {
+      id: '/games/puntoBanco'
+      path: '/games/puntoBanco'
+      fullPath: '/games/puntoBanco'
+      preLoaderRoute: typeof GamesPuntoBancoImport
       parentRoute: typeof rootRoute
     }
     '/games/slots': {
@@ -91,16 +91,16 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/payout': typeof PayoutRoute
-  '/games/baccarat': typeof GamesBaccaratRoute
   '/games/blackjack': typeof GamesBlackjackRoute
+  '/games/puntoBanco': typeof GamesPuntoBancoRoute
   '/games/slots': typeof GamesSlotsRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/payout': typeof PayoutRoute
-  '/games/baccarat': typeof GamesBaccaratRoute
   '/games/blackjack': typeof GamesBlackjackRoute
+  '/games/puntoBanco': typeof GamesPuntoBancoRoute
   '/games/slots': typeof GamesSlotsRoute
 }
 
@@ -108,8 +108,8 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/payout': typeof PayoutRoute
-  '/games/baccarat': typeof GamesBaccaratRoute
   '/games/blackjack': typeof GamesBlackjackRoute
+  '/games/puntoBanco': typeof GamesPuntoBancoRoute
   '/games/slots': typeof GamesSlotsRoute
 }
 
@@ -118,17 +118,22 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/payout'
-    | '/games/baccarat'
     | '/games/blackjack'
+    | '/games/puntoBanco'
     | '/games/slots'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/payout' | '/games/baccarat' | '/games/blackjack' | '/games/slots'
+  to:
+    | '/'
+    | '/payout'
+    | '/games/blackjack'
+    | '/games/puntoBanco'
+    | '/games/slots'
   id:
     | '__root__'
     | '/'
     | '/payout'
-    | '/games/baccarat'
     | '/games/blackjack'
+    | '/games/puntoBanco'
     | '/games/slots'
   fileRoutesById: FileRoutesById
 }
@@ -136,16 +141,16 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   PayoutRoute: typeof PayoutRoute
-  GamesBaccaratRoute: typeof GamesBaccaratRoute
   GamesBlackjackRoute: typeof GamesBlackjackRoute
+  GamesPuntoBancoRoute: typeof GamesPuntoBancoRoute
   GamesSlotsRoute: typeof GamesSlotsRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   PayoutRoute: PayoutRoute,
-  GamesBaccaratRoute: GamesBaccaratRoute,
   GamesBlackjackRoute: GamesBlackjackRoute,
+  GamesPuntoBancoRoute: GamesPuntoBancoRoute,
   GamesSlotsRoute: GamesSlotsRoute,
 }
 
@@ -163,8 +168,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/payout",
-        "/games/baccarat",
         "/games/blackjack",
+        "/games/puntoBanco",
         "/games/slots"
       ]
     },
@@ -174,11 +179,11 @@ export const routeTree = rootRoute
     "/payout": {
       "filePath": "payout.tsx"
     },
-    "/games/baccarat": {
-      "filePath": "games/baccarat.tsx"
-    },
     "/games/blackjack": {
       "filePath": "games/blackjack.tsx"
+    },
+    "/games/puntoBanco": {
+      "filePath": "games/puntoBanco.tsx"
     },
     "/games/slots": {
       "filePath": "games/slots.tsx"

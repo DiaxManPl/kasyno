@@ -21,7 +21,7 @@ function Payout() {
 	}, [isHover]);
 
 	return (
-		<div className="relative h-full">
+		<div className="relative h-full overflow-hidden">
 			<a
 				ref={btnRef}
 				href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"

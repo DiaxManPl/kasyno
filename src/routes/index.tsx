@@ -9,6 +9,7 @@ function HomePage() {
 		<div className="relative mx-auto flex h-full max-w-5xl select-none flex-col justify-center gap-8">
 			<div className="flex items-center justify-center gap-24">
 				<GameLink name="𝓒𝔃𝓪𝓻𝓷𝔂 𝓙𝓪𝓬𝓮𝓴" imgSrc="blackjack.png" link="/games/blackjack" alt="czarny jacek" />
+				<GameLink name="𝓟𝓾𝓷𝓽𝓸 𝓫𝓪𝓷𝓬𝓸" imgSrc="baccarat.png" link="/games/puntoBanco" alt="baccarat" />
 				<GameLink name="𝓙𝓮𝓭𝓷𝓸𝓻𝓮𝓴𝓲 𝓫𝓪𝓷𝓭𝔂𝓽𝓪" imgSrc="slots.png" link="/games/slots" alt="jednoreki bandyta" />
 			</div>
 			<Link
