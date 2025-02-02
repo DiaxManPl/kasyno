@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
 	title: "Kasyno",
-	description: "Made With <3 Bby Wiktor and Mikołaj",
+	description: "Made With <3 by Wiktor and Mikołaj",
 };
 
 export default function RootLayout({
@@ -13,7 +13,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="pl">
-			<body className={`antialiased dark`}>{children}</body>
+			<body className={`dark antialiased`}>{children}</body>
 		</html>
 	);
 }
