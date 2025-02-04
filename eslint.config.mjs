@@ -47,6 +47,7 @@ export default tseslint.config(
 		rules: {
 			"react/react-in-jsx-scope": "off", // It's not 2017 anymore, why is this still on by default
 			"tailwindcss/classnames-order": "off", // This is already handled by Prettier
+			"@typescript-eslint/no-unused-vars": "warn",
 		},
 	},
 );
