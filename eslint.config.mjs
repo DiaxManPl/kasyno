@@ -5,6 +5,8 @@ import { FlatCompat } from "@eslint/eslintrc";
 import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
 
+import react from "eslint-plugin-react";
+import reactHooks from "eslint-plugin-react-hooks";
 import tailwind from "eslint-plugin-tailwindcss";
 import prettier from "eslint-config-prettier";
 
@@ -26,8 +28,8 @@ export default tseslint.config(
 
 	// Next.js & React
 	...compat.extends("plugin:@next/next/recommended"),
-	...compat.extends("plugin:react/recommended"),
-	...compat.extends("plugin:react-hooks/recommended"),
+	react.configs.flat["jsx-runtime"],
+	reactHooks.configs["recommended-latest"],
 
 	// Other plugins
 	...tailwind.configs["flat/recommended"],
